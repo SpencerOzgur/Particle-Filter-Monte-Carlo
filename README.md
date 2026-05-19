@@ -23,14 +23,18 @@ The goal is to:
 We consider the following linear Gaussian state-space model:
 
 ### State Equation
+$$
 \[
 x_t = \phi x_{t-1} + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \sigma^2)
 \]
+$$
 
 ### Observation Equation
+$$
 \[
 y_t = \alpha x_t + \nu_t, \quad \nu_t \sim \mathcal{N}(0, \tau^2)
 \]
+$$
 
 Where:
 - \(x_t\): latent output gap (unobserved)
