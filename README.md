@@ -25,30 +25,30 @@ We consider the following linear Gaussian state-space model:
 ### State Equation
 $$
 \[
-x_t = \phi x_{t-1} + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \sigma^2)
+x_t = \theta x_{t-1} + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \sigma^2)
 \]
 $$
 
 ### Observation Equation
 $$
 \[
-y_t = \alpha x_t + \nu_t, \quad \nu_t \sim \mathcal{N}(0, \tau^2)
+y_t = \phi x_t + \eta_t, \quad \eta_t \sim \mathcal{N}(0, \tau^2)
 \]
 $$
 
 Where:
-- \(x_t\): latent output gap (unobserved)
-- \(y_t\): observed GDP growth
-- \(\phi\): persistence parameter
-- \(\alpha\): loading coefficient
-- \(\sigma^2, \tau^2\): noise variances
+- $$\(x_t\)$$: latent output gap (unobserved)
+- $$\(y_t\)$$: observed GDP growth
+- $$\(\theta\)$$: persistence parameter
+- $$\(\phi\)$$: loading coefficient
+- $$\(\sigma^2, \tau^2\)$$: noise variances
 
 ---
 
 ## Methods
 
 ### 1. Particle Filter (Primary Method)
-- Sequential Monte Carlo approximation of posterior \( p(x_t | y_{1:t}) \)
+- Sequential Monte Carlo approximation of posterior $$\( p(x_t | y_{1:t}) \)$$
 - Steps:
   - Initialization
   - Prediction
