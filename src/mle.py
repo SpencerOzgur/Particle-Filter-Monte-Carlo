@@ -15,7 +15,7 @@ def mle_estimate(x:np.array, y:np.array) -> dict:
         return -ll
 
     res = minimize(fun=neg_log_likelihood,
-                   x0=np.array([0.5, 1.0, np.log(0.1), np.log(0.5)]),
+                   x0=np.array([0.5, 0.5, np.log(np.var(y)), np.log(np.var(y))]),
                    method='L-BFGS-B',
                    bounds=[(-0.999, 0.999), (None, None), (None, None), (None, None)])
     phi, alpha, log_sigma2, log_tau2 = res.x
