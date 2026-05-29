@@ -26,7 +26,7 @@ def obj_particle_filter(params, gdp_obs):
 
     particles = rng.normal(0, np.std(gdp_obs), n_particles)
     
-    log_lk = 0
+    ll = 0
     
     for t in range(1, T):
 
@@ -76,7 +76,7 @@ def obj_particle_filter(params, gdp_obs):
         if not np.isfinite(addition):
             return 1e12
         
-        log_lk += addition
+        ll += addition
     
         #Normalize weights
         w_normalized = np.exp(log_w - addition)
@@ -97,7 +97,7 @@ def obj_particle_filter(params, gdp_obs):
                 
             particles[j] = gap_new[i]
             
-    return -log_lk
+    return -ll
 
 
 
