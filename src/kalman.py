@@ -2,15 +2,17 @@ import numpy as np
 from scipy.optimize import minimize
 
 
-def obj_kalman_filter(params, gdp_obs):
+def obj_kalman_filter(params, gdp_obs, 
+                      initial_gap_guess, initial_gap_var):
+                          
     phi, theta, sig, tau = params
 
     # Time observations
     T = len(gdp_obs)
 
     ##Initialize
-    gap = 100
-    gap_var = 0.01
+    gap = initial_gap_guess
+    gap_var = initial_gap_var
 
     neg_ll = 0
 
