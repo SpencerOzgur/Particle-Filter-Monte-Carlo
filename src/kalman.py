@@ -92,7 +92,6 @@ def get_kf_params(gdp_obs):
     return sol.x
 
 
-optimal_params = get_kf_params(gdp)
 
 
 def recover_gap_kf(optimal_params, gdp_obs):
@@ -129,5 +128,3 @@ def recover_gap_kf(optimal_params, gdp_obs):
 
     return gap_estimates, gap_var_estimates
 
-
-gap_estimates, gap_var_estimates = recover_gap_kf(optimal_params, gdp)

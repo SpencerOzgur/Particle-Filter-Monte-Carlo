@@ -27,3 +27,34 @@ def mle_estimate(x:np.array, y:np.array) -> dict:
         'success': res.success,
         'nll': res.fun
     }
+
+def recover_gap_mle(params: dict, y_obs: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    phi   = params['phi']
+    alpha = params['alpha']
+    sigma = np.sqrt(params['sigma2'])
+    tau   = np.sqrt(params['tau2'])
+
+    T = len(y_obs)
+    gap     = 0.0
+    gap_var = sigma**2 / (1 - phi**2)
+
+    gap_estimates     = np.zeros(T)
+    gap_var_estimates = np.zeros(T)
+
+    for t in range(1, T):
+        # Predict
+        gap_hat     = phi * gap
+        gap_var_hat = phi**2 * gap_var + sigma**2
+
+        # Update
+        y_err       = y_obs[t] - alpha * gap_hat
+        y_var       = alpha**2 * gap_var_hat + tau**2
+        kalman_gain = (gap_var_hat * alpha) / y_var
+
+        gap     = gap_hat + kalman_gain * y_err
+        gap_var = (1 - kalman_gain * alpha) * gap_var_hat
+
+        gap_estimates[t]     = gap
+        gap_var_estimates[t] = gap_var
+
+    return gap_estimates, gap_var_estimates
