@@ -1,16 +1,20 @@
 import numpy as np
 
-def generate_data(N:int = 500, phi:float = 0.9,
-                  alpha:float = 1.5, sigma2:float = 0.1,
-                  tau2:float = 0.5, seed:int = 42) -> tuple[np.ndarray, np.ndarray]:
+def generate_data(T:int = 100, n_sims=100,
+                  phi:float = 0.9, alpha:float = 1.5,
+                  sigma2:float = 0.1, tau2:float = 0.5) -> tuple[np.ndarray, np.ndarray]:
+    x_sim = np.zeros((n_sims, T))
+    y_sim = np.zeros((n_sims, T))
 
-    rng = np.random.default_rng(seed)
-    x = np.zeros(N)
-    y = np.zeros(N)
+    for i in range(n_sims):
+        x = np.zeros(T)
 
-    x[0] = rng.normal(0, np.sqrt(sigma2 / (1 - phi**2)))
-    for i in range(1, N):
-        x[i] = phi * x[i - 1] + rng.normal(0, np.sqrt(sigma2))
+        x[0] = np.random.normal(0, np.sqrt(sigma2 / (1 - phi**2)))
+        for t in range(1, T):
+            x[t] = phi * x[t - 1] + np.random.normal(0, np.sqrt(sigma2))
 
-    y = alpha * x + rng.normal(0, np.sqrt(tau2), size=N)
-    return x, y
+        y = alpha * x + np.random.normal(0, np.sqrt(tau2), size=T)
+        x_sim[i] = x
+        y_sim[i] = y
+    return x_sim, y_sim
+
