@@ -39,22 +39,6 @@ def obj_kalman_filter(params, gdp_obs,
     return neg_ll
 
 
-phi_lb = -0.99
-phi_ub = 0.99
-
-theta_lb = -5
-theta_ub = 5
-
-sig_lb = 1e-4
-sig_ub = 100
-
-tau_lb = 1e-4
-tau_ub = 100
-
-lb_list = [phi_lb, theta_lb, sig_lb, tau_lb]
-ub_list = [phi_ub, theta_ub, sig_ub, tau_ub]
-
-
 def get_kf_params(gdp_obs):
     # Initial guesses
 
@@ -92,8 +76,6 @@ def get_kf_params(gdp_obs):
     )
 
     return sol.x
-
-
 
 
 def recover_gap_kf(optimal_params, gdp_obs):
