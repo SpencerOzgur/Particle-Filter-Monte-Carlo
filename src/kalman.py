@@ -76,12 +76,16 @@ def get_kf_params(gdp_obs):
         bounds=bounds, x0=x0, method='L-BFGS-B'
     )
 
-    return sol.x
+    phi_hat, theta_hat, sig_hat, tau_hat = sol.x
+
+    return phi_hat, theta_hat, sig_hat**2, tau_hat**2
 
 
 def recover_gap_kf(optimal_params, gdp_obs):
   
-    phi, theta, sig, tau = optimal_params
+    phi, theta, sig_sq, tau_sq = optimal_params
+    sig = np.sqrt(sig_sq)
+    tau = np.sqrt(tau_sq)
 
     # Time observations
     T = len(gdp_obs)
