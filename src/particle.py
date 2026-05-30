@@ -13,7 +13,7 @@ def log_n(x,m,s):
 
 def obj_particle_filter(params, gdp_obs):
 
-    phi, theta, sig, tau = params
+    phi, alpha, sig, tau = params
 
     
     rng = np.random.default_rng(123)
@@ -35,13 +35,13 @@ def obj_particle_filter(params, gdp_obs):
     
         #Proposal dist
         sig_I = np.sqrt( 
-            1 / ((1/sig**2) + (theta**2 / tau**2))
+            1 / ((1/sig**2) + (alpha**2 / tau**2))
         )
             
         m_I = (
             sig_I**2
             * ((m_T / sig**2)
-               + (theta * gdp_obs[t] / tau**2)
+               + (alpha * gdp_obs[t] / tau**2)
               )
         )
 
@@ -51,7 +51,7 @@ def obj_particle_filter(params, gdp_obs):
         
 
         #Likelihood function
-        m_L = theta * gap_new
+        m_L = alpha * gap_new
 
         log_p_gdp = log_n(gdp_obs[t], m_L, tau)
 
@@ -104,13 +104,13 @@ def get_pf_params(gdp_obs):
     #Initial guesses
 
     phi_0 = 0.5
-    theta_0 = 0.5
+    alpha_0 = 0.5
 
     sig_0 = np.std(gdp_obs)
     tau_0 = np.std(gdp_obs)
     
     
-    x0 = np.array([phi_0, theta_0, 
+    x0 = np.array([phi_0, alpha_0, 
                    sig_0, tau_0])
 
 
@@ -119,8 +119,8 @@ def get_pf_params(gdp_obs):
     phi_lb = -0.999
     phi_ub = 0.999
 
-    theta_lb = 1e-4
-    theta_ub = 1e4
+    alpha_lb = 1e-4
+    alpha_ub = 1e4
 
     sig_lb = 1e-4
     sig_ub = 1e5
@@ -129,8 +129,8 @@ def get_pf_params(gdp_obs):
     tau_ub = 1e5
     
     
-    lb_list = [phi_lb, theta_lb, sig_lb, tau_lb]
-    ub_list = [phi_ub, theta_ub, sig_ub, tau_ub]
+    lb_list = [phi_lb, alpha_lb, sig_lb, tau_lb]
+    ub_list = [phi_ub, alpha_ub, sig_ub, tau_ub]
 
     bounds = list(zip(lb_list, ub_list))
 
@@ -139,11 +139,13 @@ def get_pf_params(gdp_obs):
         bounds=bounds, x0=x0, method='Nelder-Mead'
     )
 
+    
+
     return sol.x
 
 def recover_gap_pf(optimal_params, gdp_obs):
 
-    phi, theta, sig, tau = optimal_params
+    phi, alpha, sig, tau = optimal_params
 
     rng = np.random.default_rng(123)
     
@@ -168,13 +170,13 @@ def recover_gap_pf(optimal_params, gdp_obs):
     
         #Proposal dist
         sig_I = np.sqrt( 
-            1 / ((1/sig**2) + (theta**2 / tau**2))
+            1 / ((1/sig**2) + (alpha**2 / tau**2))
         )
             
         m_I = (
             sig_I**2
             * ((m_T / sig**2)
-               + (theta * gdp_obs[t] / tau**2)
+               + (alpha * gdp_obs[t] / tau**2)
               )
         )
 
@@ -184,7 +186,7 @@ def recover_gap_pf(optimal_params, gdp_obs):
         
 
         #Likelihood function
-        m_L = theta * gap_new
+        m_L = alpha * gap_new
 
         log_p_gdp = log_n(gdp_obs[t], m_L, tau)
 
