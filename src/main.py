@@ -1,6 +1,6 @@
 from data import generate_data
 from simulate import simulate
-from evaluation import compute_rmse, export_rmse
+from evaluation import export_rmse, test_for_bias
 from plotting import plot_gap_estimates
 import numpy as np
 
