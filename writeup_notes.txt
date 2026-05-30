@@ -15,7 +15,20 @@
  - Comment on how recovery of output gap from MLE optimal parameters is the KF procedure
 
 4. KF
- - 
+ - Optional: GPS tracking analogy
+ - Explain why KF is natural in this case - linear Gaussian state/space model, should provide best estimate
+ - Justify initial guesses, bounds on parameters
+ - Include derivation of observation, update formulae
+ - Output: optimal parameters, recovered output gap point estimates and variances
+   - Construct CI for parameters, CI for output gap - compare to MLE parameters, true generated output gap
+
+5. PF
+ - Description as "non-parametric MC KF"
+ - Hyperparameters/model choices: number of particles, proposal distribution, SIR
+    - Emphasize SIR and why we use it
+ - Use of Nelder-Mead, CRN in solver
+ - Numeric stability edits comments
+
 
 
 
