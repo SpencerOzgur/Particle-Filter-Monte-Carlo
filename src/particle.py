@@ -139,13 +139,15 @@ def get_pf_params(gdp_obs):
         bounds=bounds, x0=x0, method='Nelder-Mead'
     )
 
+    phi, alpha, sig, tau = sol.x
     
-
-    return sol.x
+    return phi, alpha, sig**2, tau**2
 
 def recover_gap_pf(optimal_params, gdp_obs):
 
-    phi, alpha, sig, tau = optimal_params
+    phi, alpha, sig_sq, tau_sq = optimal_params
+    sig = np.sqrt(sig_sq)
+    tau = np.sqrt(tau_sq)
 
     rng = np.random.default_rng(123)
     
