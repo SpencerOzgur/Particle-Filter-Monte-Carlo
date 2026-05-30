@@ -15,11 +15,17 @@ def simulate(T: int, n_sims: int, x_true: np.ndarray, y_true: np.ndarray) -> dic
 
     for i in range(n_sims):
         mle_params = mle_estimate(x_true[i], y_true[i])
-        kf_params = get_kf_params(y_true[i])
+        kf_params = get_kf_params(y_true[i],
+                                 initial_gap_guess,
+                                 initial_gap_var
+                                 )
         pf_params = get_pf_params(y_true[i])
 
         mle_sim[i] = recover_gap_mle(mle_params, y_true[i])[0]
-        kf_sim[i] = recover_gap_kf(kf_params, y_true[i])[0]
+        kf_sim[i] = recover_gap_kf(kf_params, y_true[i],
+                                  initial_gap_guess,
+                                  initial_gap_var
+                                  )[0]
         pf_sim[i] = recover_gap_pf(pf_params, y_true[i])[0]
 
         mle_params_all[i] = [mle_params[k] for k in param_keys]
