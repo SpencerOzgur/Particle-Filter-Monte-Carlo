@@ -16,7 +16,7 @@ def obj_kalman_filter(params, gdp_obs):
     neg_ll = 0
 
     # Kalman Update
-    for t in range(1, T):
+    for t in range(0, T):
         gap_hat = phi * gap
         gap_var_hat = phi ** 2 * gap_var + sig ** 2
 
@@ -95,7 +95,7 @@ def recover_gap_kf(optimal_params, gdp_obs):
     gap_var_estimates = np.zeros(T)
 
     # Kalman Update
-    for t in range(1, T):
+    for t in range(0, T):
         gap_hat = phi * gap
         gap_var_hat = phi ** 2 * gap_var + sig ** 2
 
