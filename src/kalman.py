@@ -4,7 +4,7 @@ from scipy.optimize import minimize
 
 def obj_kalman_filter(params, gdp_obs):
                           
-    phi, theta, sig, tau = params
+    phi, alpha, sig, tau = params
 
     # Time observations
     T = len(gdp_obs)
@@ -20,8 +20,8 @@ def obj_kalman_filter(params, gdp_obs):
         gap_hat = phi * gap
         gap_var_hat = phi ** 2 * gap_var + sig ** 2
 
-        gdp_hat = theta * gap_hat
-        gdp_forecast_var = theta ** 2 * gap_var_hat + tau ** 2
+        gdp_hat = alpha * gap_hat
+        gdp_forecast_var = alpha ** 2 * gap_var_hat + tau ** 2
         gdp_forecast_err = gdp_obs[t] - gdp_hat
 
         neg_ll += (
@@ -29,11 +29,11 @@ def obj_kalman_filter(params, gdp_obs):
                 + (gdp_forecast_err ** 2) / gdp_forecast_var
         )
 
-        kalman_gain = (gap_var_hat * theta) / gdp_forecast_var
+        kalman_gain = (gap_var_hat * alpha) / gdp_forecast_var
 
         gap = gap_hat + (kalman_gain * gdp_forecast_err)
 
-        gap_var = (1 - kalman_gain * theta) * gap_var_hat
+        gap_var = (1 - kalman_gain * alpha) * gap_var_hat
 
     return neg_ll
 
@@ -42,12 +42,12 @@ def get_kf_params(gdp_obs):
     # Initial guesses
 
     phi_0 = 0.5
-    theta_0 = 0.5
+    alpha_0 = 0.5
 
     sig_0 = np.std(gdp_obs)
     tau_0 = np.std(gdp_obs)
 
-    x0 = np.array([phi_0, theta_0,
+    x0 = np.array([phi_0, alpha_0,
                    sig_0, tau_0])
 
     # Parameter bounds
@@ -55,8 +55,8 @@ def get_kf_params(gdp_obs):
     phi_lb = -0.999
     phi_ub = 0.999
 
-    theta_lb = 1e-4
-    theta_ub = 1e4
+    alpha_lb = 1e-4
+    alpha_ub = 1e4
 
     sig_lb = 1e-4
     sig_ub = 1e5
@@ -64,8 +64,8 @@ def get_kf_params(gdp_obs):
     tau_lb = 1e-4
     tau_ub = 1e5
 
-    lb_list = [phi_lb, theta_lb, sig_lb, tau_lb]
-    ub_list = [phi_ub, theta_ub, sig_ub, tau_ub]
+    lb_list = [phi_lb, alpha_lb, sig_lb, tau_lb]
+    ub_list = [phi_ub, alpha_ub, sig_ub, tau_ub]
 
     bounds = list(zip(lb_list, ub_list))
 
@@ -76,14 +76,14 @@ def get_kf_params(gdp_obs):
         bounds=bounds, x0=x0, method='L-BFGS-B'
     )
 
-    phi_hat, theta_hat, sig_hat, tau_hat = sol.x
+    phi_hat, alpha_hat, sig_hat, tau_hat = sol.x
 
-    return phi_hat, theta_hat, sig_hat**2, tau_hat**2
+    return phi_hat, alpha_hat, sig_hat**2, tau_hat**2
 
 
 def recover_gap_kf(optimal_params, gdp_obs):
   
-    phi, theta, sig_sq, tau_sq = optimal_params
+    phi, alpha, sig_sq, tau_sq = optimal_params
     sig = np.sqrt(sig_sq)
     tau = np.sqrt(tau_sq)
 
@@ -103,15 +103,15 @@ def recover_gap_kf(optimal_params, gdp_obs):
         gap_hat = phi * gap
         gap_var_hat = phi ** 2 * gap_var + sig ** 2
 
-        gdp_hat = theta * gap_hat
-        gdp_forecast_var = theta ** 2 * gap_var_hat + tau ** 2
+        gdp_hat = alpha * gap_hat
+        gdp_forecast_var = alpha ** 2 * gap_var_hat + tau ** 2
         gdp_forecast_err = gdp_obs[t] - gdp_hat
 
-        kalman_gain = (gap_var_hat * theta) / gdp_forecast_var
+        kalman_gain = (gap_var_hat * alpha) / gdp_forecast_var
 
         gap = gap_hat + (kalman_gain * gdp_forecast_err)
 
-        gap_var = (1 - kalman_gain * theta) * gap_var_hat
+        gap_var = (1 - kalman_gain * alpha) * gap_var_hat
 
         gap_estimates[t] = gap
         gap_var_estimates[t] = gap_var
