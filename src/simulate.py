@@ -31,6 +31,6 @@ def simulate(T: int, n_sims: int, x_true: np.ndarray, y_true: np.ndarray) -> dic
         pf_params_all[i] = pf_params
 
     return {
-        'gaps': {'MLE': mle_sim, 'KF': kf_sim, 'PF': pf_sim},
+        'gaps': {'MLE': mle_point, 'KF': kf_point, 'PF': pf_point},
         'params': {'MLE': mle_params_all, 'KF': kf_params_all, 'PF': pf_params_all}
     }
