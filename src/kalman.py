@@ -39,7 +39,9 @@ def obj_kalman_filter(params, gdp_obs,
     return neg_ll
 
 
-def get_kf_params(gdp_obs):
+def get_kf_params(gdp_obs, 
+                  initial_gap_guess, 
+                  initial_gap_var):
     # Initial guesses
 
     phi_0 = 0.5
@@ -71,14 +73,20 @@ def get_kf_params(gdp_obs):
     bounds = list(zip(lb_list, ub_list))
 
     sol = minimize(
-        lambda params: obj_kalman_filter(params, gdp_obs),
+        lambda params: obj_kalman_filter(
+          params, gdp_obs,
+          initial_gap_guess, 
+          initial_gap_var
+        ),
         bounds=bounds, x0=x0, method='L-BFGS-B'
     )
 
     return sol.x
 
 
-def recover_gap_kf(optimal_params, gdp_obs):
+def recover_gap_kf(optimal_params, gdp_obs,
+                  initial_gap_guess, 
+                  initial_gap_var):
     phi, theta, sig, tau = optimal_params
 
     # Time observations
