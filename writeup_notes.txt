@@ -1,1 +1,22 @@
-1. SEEDING - separate seeds for simulation, 
+1. SEEDING - separate seeds for data generation, PF optimization/recovery
+ - PF optimization requires common random numbers - objective needs to be deterministic, otherwise gradient DNE
+ - Using two separate seeds for data gen / PF allows for complete independence of these two parts - tie back to pseudo-random in writeup
+
+
+2. DATA GENERATION
+ - ADD: parameter choices-economic feasibility? AR stationarity conditions?
+ - Initial value explanation? Why x[0] is chosen randomly ~ N(0, var)?
+
+3. MLE
+ - Highlight treatment of output gap as observable - otherwise unconditional MLE is equivalent to KF
+ - Emphasize that these are benchmark parameters - best possible estimates IF all data were observable
+    - Even if output gap were observable, still can't recover each parameter exactly, so MLE is the best estimate given this specific draw of the data
+ - Include derivation of likelihood function
+ - Comment on how recovery of output gap from MLE optimal parameters is the KF procedure
+
+4. KF
+ - 
+
+
+
+
