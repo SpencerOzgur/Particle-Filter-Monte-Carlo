@@ -116,17 +116,17 @@ def get_pf_params(gdp_obs):
 
     #Parameter bounds
 
-    phi_lb = -0.99
-    phi_ub = 0.99
-    
-    theta_lb = -5
-    theta_ub = 5
-    
+    phi_lb = -0.999
+    phi_ub = 0.999
+
+    theta_lb = 1e-4
+    theta_ub = 1e4
+
     sig_lb = 1e-4
-    sig_ub = 100
-    
+    sig_ub = 1e5
+
     tau_lb = 1e-4
-    tau_ub = 100
+    tau_ub = 1e5
     
     
     lb_list = [phi_lb, theta_lb, sig_lb, tau_lb]
