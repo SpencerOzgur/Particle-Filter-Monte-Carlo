@@ -22,6 +22,12 @@
  - Output: optimal parameters, recovered output gap point estimates and variances
    - Construct CI for parameters, CI for output gap - compare to MLE parameters, true generated output gap
 
+-- The Kalman filter is a method that estimates a latent state from noisy observations. A common concrete application is in estimating the position of a moving vehicle. The vehicle may have an internal system that periodically measures its speed, and a separate GPS system that observes its position with some degree of error. Neither are capable of precisely locating the vehicle - but the Kalman filter provides a technique for combining these two sources of information to produce a best estimate. 
+
+In this application, the time series of the vehicle's location is the latent state. It is not directly observable, but rather estimated from combining two sources: the internal speed data that defines the assumed evolution of the state, and the noisy GPS observations of the vehicle's location. From the vehicle's own periodic measurements of its speed, a finite difference-like estimate of its relative location can be made. However, due to the speed observations not being continuous in time, any variations in speed between observations can introduce error. In the context of Kalman filtering, this variance or uncertainty in speed fluctuations is known as the process noise - the noise associated with the evolution of the true underlying latent state (or process). Likewise, the GPS observations represent measurements, and the level of precision or uncertainty in these observations is known as observation noise. The Kalman filter seeks to balance the state evolution with the observation. In a loose sense, it averages the estimates from speed readings and GPS observations, weighting or "trusting" each based on its associated noise. 
+
+
+
 5. PF
  - Description as "non-parametric MC KF"
  - Hyperparameters/model choices: number of particles, proposal distribution, SIR
