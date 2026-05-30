@@ -93,8 +93,8 @@ def recover_gap_kf(optimal_params, gdp_obs,
     T = len(gdp_obs)
 
     ##Initialize
-    gap = 0.0
-    gap_var = 0.1
+    gap = initial_gap_guess
+    gap_var = initial_gap_var
 
     # Store estimates
     gap_estimates = np.zeros(T)
